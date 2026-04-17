@@ -7,6 +7,7 @@ import java.util.List;
 @Entity
 @Table(name="periods")
 public class Period{
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +18,7 @@ public class Period{
     private Integer startYear;
     private Integer endYear;
 
-    @Column(length=1000000)
+    @Column(length=1000)
     private String overview;
 
     @ManyToOne
@@ -27,61 +28,89 @@ public class Period{
     @OneToMany(mappedBy="period", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Event> events=new ArrayList<>();
 
-    public Period(){
+    @OneToMany(mappedBy="period", cascade=CascadeType.ALL, orphanRemoval=true)
+    private List<Civilization> civilizations=new ArrayList<>();
 
+    public Period(){
+        
     }
+
     public Period(String title, Integer startYear, Integer endYear, String overview){
-        this.title=new String(title);
-        this.startYear=Integer.valueOf(startYear);
-        this.endYear=Integer.valueOf(endYear);
-        this.overview=new String(overview);
+        this.title=title;
+        this.startYear=startYear;
+        this.endYear=endYear;
+        this.overview=overview;
     }
+
     public Long getId(){
         return id;
     }
+
     public void setId(Long id){
         this.id=id;
     }
+
     public String getTitle(){
-        return new String(title);
+        return title;
     }
+
     public void setTitle(String title){
-        this.title=new String(title);
+        this.title=title;
     }
+
     public Integer getStartYear(){
-        return (Integer) Integer.valueOf(startYear);
+        return startYear;
     }
+
     public void setStartYear(Integer startYear){
-        this.startYear=Integer.valueOf(startYear);
+        this.startYear=startYear;
     }
+
     public Integer getEndYear(){
-        return Integer.valueOf(endYear);
+        return endYear;
     }
+
     public void setEndYear(Integer endYear){
-        this.endYear=Integer.valueOf(endYear);
+        this.endYear=endYear;
     }
+
     public String getOverview(){
-        return new String(overview);
+        return overview;
     }
+
     public void setOverview(String overview){
-        this.overview=new String(overview);
+        this.overview=overview;
     }
+
     public Course getCourse(){
         return course;
     }
+
     public void setCourse(Course course){
         this.course=course;
     }
+
     public List<Event> getEvents(){
         return events;
     }
+
     public void setEvents(List<Event> events){
         this.events=events;
     }
+
+    public List<Civilization> getCivilizations(){
+        return civilizations;
+    }
+
+    public void setCivilizations(List<Civilization> civilizations){
+        this.civilizations=civilizations;
+    }
+
     public void addEvent(Event event){
         events.add(event);
         event.setPeriod(this);
     }
+
     public void removeEvent(Event event){
         events.remove(event);
         event.setPeriod(null);
