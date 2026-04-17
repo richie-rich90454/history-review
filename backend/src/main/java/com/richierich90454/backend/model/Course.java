@@ -62,4 +62,7 @@ public class Course{
         periods.remove(period);
         period.setCourse(null);
     }
+    public Long getId() {
+        return id;
+    }
 }
