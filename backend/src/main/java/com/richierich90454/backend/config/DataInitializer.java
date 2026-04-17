@@ -12,13 +12,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class DataInitializer implements CommandLineRunner {
+public class DataInitializer implements CommandLineRunner{
 
     private final UserRepository userRepository;
     private final ThemeRepository themeRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public DataInitializer(UserRepository userRepository, ThemeRepository themeRepository, PasswordEncoder passwordEncoder) {
+    public DataInitializer(UserRepository userRepository, ThemeRepository themeRepository, PasswordEncoder passwordEncoder){
         this.userRepository=userRepository;
         this.themeRepository=themeRepository;
         this.passwordEncoder=passwordEncoder;
@@ -29,8 +29,8 @@ public class DataInitializer implements CommandLineRunner {
      * @param args command line arguments
      */
     @Override
-    public void run(String... args) {
-        if (!userRepository.existsByEmail("admin@aphistory.com")) {
+    public void run(String... args){
+        if (!userRepository.existsByEmail("admin@aphistory.com")){
             User admin=new User();
             admin.setEmail("admin@aphistory.com");
             admin.setPasswordHash(passwordEncoder.encode("admin123"));
@@ -41,8 +41,8 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         List<String> themeNames=Arrays.asList("Social", "Political", "Interactions", "Cultural", "Economic", "Technology");
-        for (String name : themeNames) {
-            if (themeRepository.findByName(name).isEmpty()) {
+        for (String name : themeNames){
+            if (themeRepository.findByName(name).isEmpty()){
                 Theme theme=new Theme(name, "SPICE-T theme: " + name);
                 themeRepository.save(theme);
             }
