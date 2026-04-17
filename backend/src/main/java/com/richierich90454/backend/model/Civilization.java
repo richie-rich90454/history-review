@@ -1,4 +1,4 @@
-package com.aphistory.backend.model;
+package com.richierich90454.backend.model;
 
 
 import java.util.ArrayList;
