@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="events")
 public class Event implements Comparable<Event>{
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -30,51 +31,77 @@ public class Event implements Comparable<Event>{
     @JoinColumn(name="period_id")
     private Period period;
 
-    public Event(){
+    @ManyToOne
+    @JoinColumn(name="civilization_id")
+    private Civilization civilization;
 
+    public Event(){
+        
     }
+
     public Event(String name, Integer year, String description, String significance){
-        this.name=new String(name);
-        this.year=(Integer) Integer.valueOf(year);
-        this.description=new String(description);
-        this.significance=new String(significance);
+        this.name=name;
+        this.year=year;
+        this.description=description;
+        this.significance=significance;
     }
+
     public Long getId(){
         return id;
     }
+
     public void setId(Long id){
         this.id=id;
     }
+
     public String getName(){
-        return new String(name);
+        return name;
     }
+
     public void setName(String name){
-        this.name=new String(name);
+        this.name=name;
     }
+
     public Integer getYear(){
         return year;
     }
+
     public void setYear(Integer year){
-        this.year=(Integer) Integer.valueOf(year);
+        this.year=year;
     }
+
     public String getDescription(){
         return description;
     }
+
     public void setDescription(String description){
-        this.description=new String(description);
+        this.description=description;
     }
+
     public String getSignificance(){
         return significance;
     }
+
     public void setSignificance(String significance){
-        this.significance=new String(significance);
+        this.significance=significance;
     }
+
     public Period getPeriod(){
         return period;
     }
+
     public void setPeriod(Period period){
         this.period=period;
     }
+
+    public Civilization getCivilization(){
+        return civilization;
+    }
+
+    public void setCivilization(Civilization civilization){
+        this.civilization=civilization;
+    }
+
     @Override
     public int compareTo(Event other){
         return this.year.compareTo(other.year);

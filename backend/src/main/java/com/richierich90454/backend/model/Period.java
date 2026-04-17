@@ -18,7 +18,7 @@ public class Period{
     private Integer startYear;
     private Integer endYear;
 
-    @Column(length=1000)
+    @Column(length=100000)
     private String overview;
 
     @ManyToOne
@@ -32,7 +32,7 @@ public class Period{
     private List<Civilization> civilizations=new ArrayList<>();
 
     public Period(){
-        
+
     }
 
     public Period(String title, Integer startYear, Integer endYear, String overview){
