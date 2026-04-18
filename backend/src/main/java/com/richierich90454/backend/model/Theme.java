@@ -1,5 +1,6 @@
 package com.richierich90454.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Theme{
 
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy="theme")
     private List<Evidence> evidenceList=new ArrayList<>();
 

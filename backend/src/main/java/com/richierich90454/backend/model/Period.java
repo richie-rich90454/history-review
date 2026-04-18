@@ -1,5 +1,6 @@
 package com.richierich90454.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +26,15 @@ public class Period{
     @JoinColumn(name="course_id")
     private Course course;
 
+    @JsonIgnore
     @OneToMany(mappedBy="period", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Event> events=new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy="period", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Civilization> civilizations=new ArrayList<>();
 
     public Period(){
-
     }
 
     public Period(String title, Integer startYear, Integer endYear, String overview){

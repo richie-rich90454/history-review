@@ -1,5 +1,6 @@
 package com.richierich90454.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +26,15 @@ public class Civilization{
     @JoinColumn(name="period_id")
     private Period period;
 
+    @JsonIgnore
     @OneToMany(mappedBy="civilization", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Evidence> evidenceList=new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy="civilization", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Event> events=new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy="civilization", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Person> people=new ArrayList<>();
 
