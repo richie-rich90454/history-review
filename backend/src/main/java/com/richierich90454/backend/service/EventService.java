@@ -2,73 +2,88 @@ package com.richierich90454.backend.service;
 
 import com.richierich90454.backend.model.Event;
 import com.richierich90454.backend.model.Period;
+import com.richierich90454.backend.model.Civilization;
 import com.richierich90454.backend.repository.EventRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService{
 
-    private final EventRepository eventRepository;
-    private final PeriodService periodService;
+	private final EventRepository eventRepository;
+	private final PeriodService periodService;
+	private final CivilizationService civilizationService;
 
-    public EventService(EventRepository eventRepository, PeriodService periodService){
-        this.eventRepository=eventRepository;
-        this.periodService=periodService;
-    }
+	public EventService(EventRepository eventRepository, PeriodService periodService, CivilizationService civilizationService){
+		this.eventRepository=eventRepository;
+		this.periodService=periodService;
+		this.civilizationService=civilizationService;
+	}
 
-    /**
-     * Retrieves all events belonging to a specific period, ordered by year.
-     * @param periodId period ID
-     * @return list of Event entities
-     */
-    public List<Event> getEventsByPeriodId(Long periodId){
-        return eventRepository.findByPeriodIdOrderByYearAsc(periodId);
-    }
+	public List<Event> getAllEvents(){
+		return eventRepository.findAll();
+	}
 
-    /**
-     * Retrieves an event by its ID.
-     * @param id event ID
-     * @return Event entity
-     * @throws RuntimeException if not found
-     */
-    public Event getEventById(Long id){
-        return eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found"));
-    }
+	public List<Event> getApprovedEvents(){
+		return eventRepository.findByStatus("APPROVED");
+	}
 
-    /**
-     * Creates a new event and associates it with a period.
-     * @param event event entity (should contain period ID in its period field)
-     * @return saved Event entity
-     */
-    public Event createEvent(Event event){
-        if (event.getPeriod() != null && event.getPeriod().getId() != null){
-            Period period=periodService.getPeriodById(event.getPeriod().getId());
-            event.setPeriod(period);
-        }
-        return eventRepository.save(event);
-    }
+	public Event getEventById(Long id){
+		return eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found"));
+	}
 
-    /**
-     * Updates an existing event.
-     * @param id event ID
-     * @param eventDetails updated event data
-     * @return updated Event entity
-     */
-    public Event updateEvent(Long id, Event eventDetails){
-        Event event=getEventById(id);
-        event.setName(eventDetails.getName());
-        event.setYear(eventDetails.getYear());
-        event.setDescription(eventDetails.getDescription());
-        event.setSignificance(eventDetails.getSignificance());
-        return eventRepository.save(event);
-    }
+	public List<Event> getEventsByPeriodId(Long periodId){
+		return eventRepository.findByPeriodIdOrderByYearAsc(periodId).stream()
+				.filter(e -> "APPROVED".equals(e.getStatus()))
+				.collect(Collectors.toList());
+	}
 
-    /**
-     * Deletes an event by its ID.
-     * @param id event ID
-     */
-    public void deleteEvent(Long id){
-        eventRepository.deleteById(id);
-    }
+	public List<Event> getEventsByCivilizationId(Long civilizationId){
+		return eventRepository.findByCivilizationIdOrderByYearAsc(civilizationId).stream()
+				.filter(e -> "APPROVED".equals(e.getStatus()))
+				.collect(Collectors.toList());
+	}
+
+	public Event createEvent(Event event, boolean isAdmin){
+		if (event.getPeriod() != null && event.getPeriod().getId() != null){
+			Period period=periodService.getPeriodById(event.getPeriod().getId());
+			event.setPeriod(period);
+		}
+		if (event.getCivilization() != null && event.getCivilization().getId() != null){
+			Civilization civ=civilizationService.getCivilizationById(event.getCivilization().getId());
+			event.setCivilization(civ);
+		}
+		if (!isAdmin){
+			event.setStatus("PENDING");
+		} else{
+			event.setStatus("APPROVED");
+		}
+		return eventRepository.save(event);
+	}
+
+	public Event updateEvent(Long id, Event eventDetails){
+		Event event=getEventById(id);
+		event.setName(eventDetails.getName());
+		event.setYear(eventDetails.getYear());
+		event.setDescription(eventDetails.getDescription());
+		event.setSignificance(eventDetails.getSignificance());
+		return eventRepository.save(event);
+	}
+
+	public void deleteEvent(Long id){
+		eventRepository.deleteById(id);
+	}
+
+	public Event approveEvent(Long id){
+		Event event=getEventById(id);
+		event.setStatus("APPROVED");
+		return eventRepository.save(event);
+	}
+
+	public Event rejectEvent(Long id){
+		Event event=getEventById(id);
+		event.setStatus("REJECTED");
+		return eventRepository.save(event);
+	}
 }
