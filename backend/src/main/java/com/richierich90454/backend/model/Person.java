@@ -16,12 +16,15 @@ public class Person{
     private Integer birthYear;
     private Integer deathYear;
 
-    @Column(length=100000)
+    @Column(length=1000)
     private String biography;
 
     @ManyToOne
     @JoinColumn(name="civilization_id")
     private Civilization civilization;
+
+    @Column(nullable=false)
+    private String status="PENDING";
 
     public Person(){
     }
@@ -79,5 +82,13 @@ public class Person{
 
     public void setCivilization(Civilization civilization){
         this.civilization=civilization;
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status=status;
     }
 }
