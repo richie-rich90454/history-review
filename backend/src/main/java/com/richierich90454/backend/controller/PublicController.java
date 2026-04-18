@@ -1,19 +1,10 @@
 package com.richierich90454.backend.controller;
 
-import com.richierich90454.backend.model.Civilization;
-import com.richierich90454.backend.model.Course;
-import com.richierich90454.backend.model.Event;
-import com.richierich90454.backend.model.Period;
-import com.richierich90454.backend.model.Person;
-import com.richierich90454.backend.model.Theme;
-import com.richierich90454.backend.service.CivilizationService;
-import com.richierich90454.backend.service.CourseService;
-import com.richierich90454.backend.service.EventService;
-import com.richierich90454.backend.service.PeriodService;
-import com.richierich90454.backend.service.PersonService;
-import com.richierich90454.backend.service.ThemeService;
+import com.richierich90454.backend.model.*;
+import com.richierich90454.backend.service.*;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/public")
@@ -25,110 +16,83 @@ public class PublicController{
     private final CivilizationService civilizationService;
     private final ThemeService themeService;
     private final PersonService personService;
+    private final EvidenceService evidenceService;
 
-    public PublicController(CourseService courseService, PeriodService periodService, EventService eventService, CivilizationService civilizationService, ThemeService themeService, PersonService personService){
+    public PublicController(CourseService courseService, PeriodService periodService, EventService eventService,
+            CivilizationService civilizationService, ThemeService themeService,
+            PersonService personService, EvidenceService evidenceService){
         this.courseService=courseService;
         this.periodService=periodService;
         this.eventService=eventService;
         this.civilizationService=civilizationService;
         this.themeService=themeService;
         this.personService=personService;
+        this.evidenceService=evidenceService;
     }
 
-    /**
-     * Retrieves all AP History courses.
-     * @return list of Course entities
-     */
     @GetMapping("/courses")
     public List<Course> getAllCourses(){
         return courseService.getAllCourses();
     }
 
-    /**
-     * Retrieves a single course by its ID.
-     * @param id course ID
-     * @return Course entity
-     */
     @GetMapping("/courses/{id}")
     public Course getCourseById(@PathVariable Long id){
         return courseService.getCourseById(id);
     }
 
-    /**
-     * Retrieves all periods belonging to a specific course.
-     * @param courseId course ID
-     * @return list of Period entities
-     */
     @GetMapping("/courses/{courseId}/periods")
     public List<Period> getPeriodsByCourse(@PathVariable Long courseId){
         return periodService.getPeriodsByCourseId(courseId);
     }
 
-    /**
-     * Retrieves a single period by its ID.
-     * @param id period ID
-     * @return Period entity
-     */
     @GetMapping("/periods/{id}")
     public Period getPeriodById(@PathVariable Long id){
         return periodService.getPeriodById(id);
     }
 
-    /**
-     * Retrieves all events belonging to a specific period, ordered by year ascending.
-     * @param periodId period ID
-     * @return list of Event entities
-     */
     @GetMapping("/periods/{periodId}/events")
     public List<Event> getEventsByPeriod(@PathVariable Long periodId){
-        return eventService.getEventsByPeriodId(periodId);
+        return eventService.getEventsByPeriodId(periodId).stream()
+                .filter(e -> "APPROVED".equals(e.getStatus()))
+                .collect(Collectors.toList());
     }
 
-    /**
-     * Retrieves a single event by its ID.
-     * @param id event ID
-     * @return Event entity
-     */
     @GetMapping("/events/{id}")
     public Event getEventById(@PathVariable Long id){
         return eventService.getEventById(id);
     }
 
-    /**
-     * Retrieves all civilizations.
-     * @return list of Civilization entities
-     */
     @GetMapping("/civilizations")
     public List<Civilization> getAllCivilizations(){
-        return civilizationService.getAllCivilizations();
+        return civilizationService.getApprovedCivilizations();
     }
 
-    /**
-     * Retrieves a single civilization by its ID.
-     * @param id civilization ID
-     * @return Civilization entity
-     */
     @GetMapping("/civilizations/{id}")
     public Civilization getCivilizationById(@PathVariable Long id){
         return civilizationService.getCivilizationById(id);
     }
 
-    /**
-     * Retrieves all SPICE-T themes.
-     * @return list of Theme entities
-     */
+    @GetMapping("/civilizations/{civilizationId}/events")
+    public List<Event> getEventsByCivilization(@PathVariable Long civilizationId){
+        return eventService.getEventsByCivilizationId(civilizationId).stream()
+                .filter(e -> "APPROVED".equals(e.getStatus()))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/civilizations/{civilizationId}/people")
+    public List<Person> getPeopleByCivilization(@PathVariable Long civilizationId){
+        return personService.getPeopleByCivilizationId(civilizationId).stream()
+                .filter(p -> "APPROVED".equals(p.getStatus()))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("/themes")
     public List<Theme> getAllThemes(){
         return themeService.getAllThemes();
     }
 
-    /**
-     * Retrieves all people associated with a specific civilization.
-     * @param civilizationId civilization ID
-     * @return list of Person entities
-     */
-    @GetMapping("/civilizations/{civilizationId}/people")
-    public List<Person> getPeopleByCivilization(@PathVariable Long civilizationId){
-        return personService.getPeopleByCivilizationId(civilizationId);
+    @GetMapping("/evidence")
+    public List<Evidence> getApprovedEvidence(){
+        return evidenceService.getApprovedEvidence();
     }
 }

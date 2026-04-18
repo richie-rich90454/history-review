@@ -1,0 +1,70 @@
+.admin-approvals {
+	max-width: 900px;
+	margin: 2rem auto;
+}
+
+.approvals-title {
+	font-size: 2rem;
+	font-weight: bold;
+	margin-bottom: 1.5rem;
+	color: var(--c7);
+}
+
+.approvals-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.approval-card {
+	background: var(--c4);
+	border-radius: 0.5rem;
+	padding: 1.5rem;
+	box-shadow: var(--bw1);
+}
+
+.approval-header {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.approval-type {
+	background: var(--c1);
+	color: var(--c4);
+	padding: 0.25rem 0.75rem;
+	border-radius: 1rem;
+	font-size: 0.875rem;
+	text-transform: capitalize;
+}
+
+.approval-title {
+	font-weight: 600;
+	font-size: 1.25rem;
+	color: var(--c7);
+}
+
+.approval-data {
+	background: var(--c13);
+	padding: 1rem;
+	border-radius: 0.375rem;
+	overflow-x: auto;
+	font-size: 0.875rem;
+	margin-bottom: 1rem;
+}
+
+.approval-actions {
+	display: flex;
+	gap: 1rem;
+	justify-content: flex-end;
+}
+
+.btn-success {
+	background: #10b981;
+	color: white;
+}
+
+.btn-success:hover {
+	background: #059669;
+}
