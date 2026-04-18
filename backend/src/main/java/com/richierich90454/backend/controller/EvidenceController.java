@@ -10,71 +10,41 @@ import java.util.List;
 @RequestMapping("/api/evidence")
 public class EvidenceController{
 
-    private final EvidenceService evidenceService;
+	private final EvidenceService evidenceService;
 
-    public EvidenceController(EvidenceService evidenceService){
-        this.evidenceService=evidenceService;
-    }
+	public EvidenceController(EvidenceService evidenceService){
+		this.evidenceService=evidenceService;
+	}
 
-    /**
-     * Retrieves evidence filtered by civilization ID and theme ID.
-     * @param civId civilization ID
-     * @param themeId theme ID
-     * @return list of Evidence entities matching the criteria
-     */
-    @GetMapping("/public/by-civ-and-theme")
-    public List<Evidence> getEvidenceByCivAndTheme(@RequestParam Long civId, @RequestParam Long themeId){
-        return evidenceService.getEvidenceByCivilizationAndTheme(civId, themeId);
-    }
+	@GetMapping("/public/by-civ-and-theme")
+	public List<Evidence> getEvidenceByCivAndTheme(@RequestParam Long civId, @RequestParam Long themeId){
+		return evidenceService.getEvidenceByCivilizationAndTheme(civId, themeId);
+	}
 
-    /**
-     * Retrieves all evidence entries (public endpoint).
-     * @return list of all Evidence entities
-     */
-    @GetMapping("/public")
-    public List<Evidence> getAllEvidencePublic(){
-        return evidenceService.getAllEvidence();
-    }
+	@GetMapping("/public")
+	public List<Evidence> getAllEvidencePublic(){
+		return evidenceService.getApprovedEvidence();
+	}
 
-    /**
-     * Retrieves a single evidence entry by its ID.
-     * @param id evidence ID
-     * @return Evidence entity
-     */
-    @GetMapping("/public/{id}")
-    public Evidence getEvidenceById(@PathVariable Long id){
-        return evidenceService.getEvidenceById(id);
-    }
+	@GetMapping("/public/{id}")
+	public Evidence getEvidenceById(@PathVariable Long id){
+		return evidenceService.getEvidenceById(id);
+	}
 
-    /**
-     * Creates a new evidence entry (admin only).
-     * @param evidence evidence to create
-     * @return created Evidence entity
-     */
-    @PostMapping("/admin")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Evidence createEvidence(@RequestBody Evidence evidence){
-        return evidenceService.createEvidence(evidence);
-    }
+	@PostMapping("/admin")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Evidence createEvidence(@RequestBody Evidence evidence){
+		return evidenceService.createEvidence(evidence, false);
+	}
 
-    /**
-     * Updates an existing evidence entry (admin only).
-     * @param id evidence ID
-     * @param evidence updated evidence data
-     * @return updated Evidence entity
-     */
-    @PutMapping("/admin/{id}")
-    public Evidence updateEvidence(@PathVariable Long id, @RequestBody Evidence evidence){
-        return evidenceService.updateEvidence(id, evidence);
-    }
+	@PutMapping("/admin/{id}")
+	public Evidence updateEvidence(@PathVariable Long id, @RequestBody Evidence evidence){
+		return evidenceService.updateEvidence(id, evidence);
+	}
 
-    /**
-     * Deletes an evidence entry by its ID (admin only).
-     * @param id evidence ID
-     */
-    @DeleteMapping("/admin/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEvidence(@PathVariable Long id){
-        evidenceService.deleteEvidence(id);
-    }
+	@DeleteMapping("/admin/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteEvidence(@PathVariable Long id){
+		evidenceService.deleteEvidence(id);
+	}
 }
