@@ -1,12 +1,11 @@
 package com.richierich90454.backend.controller;
 
+import com.richierich90454.backend.dto.*;
 import com.richierich90454.backend.model.*;
 import com.richierich90454.backend.service.*;
-
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -49,9 +48,23 @@ public class AdminController{
 		courseService.deleteCourse(id);
 	}
 
+	@GetMapping("/courses/all")
+	public List<Course> getAllCoursesAdmin(){
+		return courseService.getAllCourses();
+	}
+
 	@PostMapping("/periods")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Period createPeriod(@RequestBody Period period){
+	public Period createPeriod(@RequestBody PeriodRequest request){
+		Period period=new Period();
+		period.setTitle(request.getTitle());
+		period.setStartYear(request.getStartYear());
+		period.setEndYear(request.getEndYear());
+		period.setOverview(request.getOverview());
+		if (request.getCourseId()!=null){
+			Course course=courseService.getCourseById(request.getCourseId());
+			period.setCourse(course);
+		}
 		return periodService.createPeriod(period);
 	}
 
@@ -66,31 +79,23 @@ public class AdminController{
 		periodService.deletePeriod(id);
 	}
 
-	@PostMapping("/events")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Event createEvent(@RequestBody Event event){
-		return eventService.createEvent(event, true);
-	}
-
-	@PutMapping("/events/{id}")
-	public Event updateEvent(@PathVariable Long id, @RequestBody Event event){
-		return eventService.updateEvent(id, event);
-	}
-
-	@DeleteMapping("/events/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteEvent(@PathVariable Long id){
-		eventService.deleteEvent(id);
-	}
-
-	@GetMapping("/events/all")
-	public List<Event> getAllEvents(){
-		return eventService.getAllEvents();
+	@GetMapping("/periods/all")
+	public List<Period> getAllPeriodsAdmin(){
+		return periodService.getAllPeriods();
 	}
 
 	@PostMapping("/civilizations")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Civilization createCivilization(@RequestBody Civilization civilization){
+	public Civilization createCivilization(@RequestBody CivilizationRequest request){
+		Civilization civilization=new Civilization();
+		civilization.setName(request.getName());
+		civilization.setOverview(request.getOverview());
+		civilization.setStartYear(request.getStartYear());
+		civilization.setEndYear(request.getEndYear());
+		if (request.getPeriodId()!=null){
+			Period period=periodService.getPeriodById(request.getPeriodId());
+			civilization.setPeriod(period);
+		}
 		return civilizationService.createCivilization(civilization, true);
 	}
 
@@ -106,13 +111,66 @@ public class AdminController{
 	}
 
 	@GetMapping("/civilizations/all")
-	public List<Civilization> getAllCivilizations(){
+	public List<Civilization> getAllCivilizationsAdmin(){
 		return civilizationService.getAllCivilizations();
+	}
+
+	@PostMapping("/events")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Event createEvent(@RequestBody EventRequest request){
+		Event event=new Event();
+		event.setName(request.getName());
+		event.setYear(request.getYear());
+		event.setDescription(request.getDescription());
+		event.setSignificance(request.getSignificance());
+		if (request.getPeriodId()!=null){
+			Period period=periodService.getPeriodById(request.getPeriodId());
+			event.setPeriod(period);
+		}
+		if (request.getCivilizationId()!=null){
+			Civilization civ=civilizationService.getCivilizationById(request.getCivilizationId());
+			event.setCivilization(civ);
+		}
+		return eventService.createEvent(event, true);
+	}
+
+	@PutMapping("/events/{id}")
+	public Event updateEvent(@PathVariable Long id, @RequestBody Event event){
+		return eventService.updateEvent(id, event);
+	}
+
+	@DeleteMapping("/events/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteEvent(@PathVariable Long id){
+		eventService.deleteEvent(id);
+	}
+
+	@GetMapping("/events/all")
+	public List<Event> getAllEventsAdmin(){
+		return eventService.getAllEvents();
 	}
 
 	@PostMapping("/evidence")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Evidence createEvidence(@RequestBody Evidence evidence){
+	public Evidence createEvidence(@RequestBody EvidenceRequest request){
+		Evidence evidence=new Evidence();
+		evidence.setTitle(request.getTitle());
+		evidence.setDescription(request.getDescription());
+		evidence.setType(request.getType());
+		evidence.setSource(request.getSource());
+		evidence.setSignificance(request.getSignificance());
+		if (request.getCivilizationId()!=null){
+			Civilization civ=civilizationService.getCivilizationById(request.getCivilizationId());
+			evidence.setCivilization(civ);
+		}
+		if (request.getThemeId()!=null){
+			Theme theme=themeService.getThemeById(request.getThemeId());
+			evidence.setTheme(theme);
+		}
+		if (request.getEventId()!=null){
+			Event event=eventService.getEventById(request.getEventId());
+			evidence.setEvent(event);
+		}
 		return evidenceService.createEvidence(evidence, true);
 	}
 
@@ -128,13 +186,22 @@ public class AdminController{
 	}
 
 	@GetMapping("/evidence/all")
-	public List<Evidence> getAllEvidence(){
+	public List<Evidence> getAllEvidenceAdmin(){
 		return evidenceService.getAllEvidence();
 	}
 
 	@PostMapping("/people")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Person createPerson(@RequestBody Person person){
+	public Person createPerson(@RequestBody PersonRequest request){
+		Person person=new Person();
+		person.setName(request.getName());
+		person.setBirthYear(request.getBirthYear());
+		person.setDeathYear(request.getDeathYear());
+		person.setBiography(request.getBiography());
+		if (request.getCivilizationId()!=null){
+			Civilization civ=civilizationService.getCivilizationById(request.getCivilizationId());
+			person.setCivilization(civ);
+		}
 		return personService.createPerson(person, true);
 	}
 
@@ -150,7 +217,7 @@ public class AdminController{
 	}
 
 	@GetMapping("/people/all")
-	public List<Person> getAllPeople(){
+	public List<Person> getAllPeopleAdmin(){
 		return personService.getAllPeople();
 	}
 
@@ -169,10 +236,5 @@ public class AdminController{
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteTheme(@PathVariable Long id){
 		themeService.deleteTheme(id);
-	}
-
-	@GetMapping("/periods/all")
-	public List<Period> getAllPeriods(){
-		return periodService.getAllPeriods();
 	}
 }

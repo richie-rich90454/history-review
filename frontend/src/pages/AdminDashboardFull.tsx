@@ -478,7 +478,7 @@ function CreatePeriodForm({ courses, onSuccess }: { courses: Course[]; onSuccess
 		e.preventDefault();
 		const parsedCourseId = parseInt(courseId);
 		if (!courseId || isNaN(parsedCourseId)) {
-			alert("Please select a valid course");
+			alert("Please select a course");
 			return;
 		}
 		setLoading(true);
@@ -489,7 +489,7 @@ function CreatePeriodForm({ courses, onSuccess }: { courses: Course[]; onSuccess
 					startYear: startYear ? parseInt(startYear) : null,
 					endYear: endYear ? parseInt(endYear) : null,
 					overview,
-					course: { id: parsedCourseId },
+					courseId: parsedCourseId,
 				},
 			});
 			setTitle("");
@@ -561,7 +561,8 @@ function CreateCivilizationForm({
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!periodId) {
+		const parsedPeriodId = parseInt(periodId);
+		if (!periodId || isNaN(parsedPeriodId)) {
 			alert("Please select a period");
 			return;
 		}
@@ -573,7 +574,7 @@ function CreateCivilizationForm({
 					overview,
 					startYear: startYear ? parseInt(startYear) : null,
 					endYear: endYear ? parseInt(endYear) : null,
-					period: { id: parseInt(periodId) },
+					periodId: parsedPeriodId,
 				},
 			});
 			setName("");
@@ -655,8 +656,8 @@ function CreateEventForm({
 			description,
 			significance,
 		};
-		if (periodId) payload.period = { id: parseInt(periodId) };
-		if (civilizationId) payload.civilization = { id: parseInt(civilizationId) };
+		if (periodId) payload.periodId = parseInt(periodId);
+		if (civilizationId) payload.civilizationId = parseInt(civilizationId);
 		try {
 			await api.post("admin/events", { json: payload });
 			setName("");
@@ -742,21 +743,23 @@ function CreateEvidenceForm({
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!civilizationId || !themeId) {
+		const parsedCivId = parseInt(civilizationId);
+		const parsedThemeId = parseInt(themeId);
+		if (!civilizationId || isNaN(parsedCivId) || !themeId || isNaN(parsedThemeId)) {
 			alert("Please select civilization and theme");
 			return;
 		}
 		setLoading(true);
 		try {
-			await api.post("admin/evidence", {
+			await api.post("evidence/admin", {
 				json: {
 					title,
 					description,
 					type,
 					source,
 					significance,
-					civilization: { id: parseInt(civilizationId) },
-					theme: { id: parseInt(themeId) },
+					civilizationId: parsedCivId,
+					themeId: parsedThemeId,
 				},
 			});
 			setTitle("");
@@ -848,7 +851,8 @@ function CreatePersonForm({
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!civilizationId) {
+		const parsedCivId = parseInt(civilizationId);
+		if (!civilizationId || isNaN(parsedCivId)) {
 			alert("Please select a civilization");
 			return;
 		}
@@ -860,7 +864,7 @@ function CreatePersonForm({
 					birthYear: birthYear ? parseInt(birthYear) : null,
 					deathYear: deathYear ? parseInt(deathYear) : null,
 					biography,
-					civilization: { id: parseInt(civilizationId) },
+					civilizationId: parsedCivId,
 				},
 			});
 			setName("");
