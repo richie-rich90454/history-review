@@ -1,34 +1,34 @@
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import './Login.css'
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import "./Login.css";
 
 export default function Register() {
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [confirmPassword, setConfirmPassword] = useState('')
-	const [error, setError] = useState('')
-	const [loading, setLoading] = useState(false)
-	const { register } = useAuth()
-	const navigate = useNavigate()
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+	const { register } = useAuth();
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
-		setError('')
+		e.preventDefault();
+		setError("");
 		if (password !== confirmPassword) {
-			setError('Passwords do not match')
-			return
+			setError("Passwords do not match");
+			return;
 		}
-		setLoading(true)
+		setLoading(true);
 		try {
-			await register(email, password)
-			navigate('/')
+			await register(email, password);
+			navigate("/");
 		} catch (err: any) {
-			setError(err.message || 'Registration failed')
+			setError(err.message || "Registration failed");
 		} finally {
-			setLoading(false)
+			setLoading(false);
 		}
-	}
+	};
 
 	return (
 		<div className="auth-container">
@@ -69,14 +69,21 @@ export default function Register() {
 							required
 						/>
 					</div>
-					<button type="submit" className="btn btn-primary auth-submit" disabled={loading}>
-						{loading ? 'Loading...' : 'Register'}
+					<button
+						type="submit"
+						className="btn btn-primary auth-submit"
+						disabled={loading}
+					>
+						{loading ? "Loading..." : "Register"}
 					</button>
 				</form>
 				<p className="auth-footer">
-					Already have an account? <Link to="/login" className="auth-link">Login</Link>
+					Already have an account?{" "}
+					<Link to="/login" className="auth-link">
+						Login
+					</Link>
 				</p>
 			</div>
 		</div>
-	)
+	);
 }

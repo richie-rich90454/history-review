@@ -1,33 +1,33 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import api from '../services/api'
-import './Home.css'
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import api from "../services/api";
+import "./Home.css";
 
 interface Course {
-	id: number
-	name: string
-	description: string
+	id: number;
+	name: string;
+	description: string;
 }
 
 export default function Home() {
-	const [courses, setCourses] = useState<Course[]>([])
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState('')
+	const [courses, setCourses] = useState<Course[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState("");
 
 	useEffect(() => {
-		api.get('public/courses')
+		api.get("public/courses")
 			.json<Course[]>()
 			.then(setCourses)
-			.catch(() => setError('Failed to load courses'))
-			.finally(() => setLoading(false))
-	}, [])
+			.catch(() => setError("Failed to load courses"))
+			.finally(() => setLoading(false));
+	}, []);
 
 	if (loading) {
-		return <div className="container">Loading courses...</div>
+		return <div className="container">Loading courses...</div>;
 	}
 
 	if (error) {
-		return <div className="container error-alert">{error}</div>
+		return <div className="container error-alert">{error}</div>;
 	}
 
 	return (
@@ -41,11 +41,11 @@ export default function Home() {
 					</Link>
 				))}
 				{courses.length === 0 && (
-					<p className="text-secondary text-center" style={{ gridColumn: '1/-1' }}>
+					<p className="text-secondary text-center" style={{ gridColumn: "1/-1" }}>
 						No courses available yet.
 					</p>
 				)}
 			</div>
 		</div>
-	)
+	);
 }

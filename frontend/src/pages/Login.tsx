@@ -1,29 +1,29 @@
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import './Login.css'
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import "./Login.css";
 
 export default function Login() {
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [error, setError] = useState('')
-	const [loading, setLoading] = useState(false)
-	const { login } = useAuth()
-	const navigate = useNavigate()
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+	const { login } = useAuth();
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
-		setError('')
-		setLoading(true)
+		e.preventDefault();
+		setError("");
+		setLoading(true);
 		try {
-			await login(email, password)
-			navigate('/')
+			await login(email, password);
+			navigate("/");
 		} catch (err: any) {
-			setError(err.message || 'Invalid email or password')
+			setError(err.message || "Invalid email or password");
 		} finally {
-			setLoading(false)
+			setLoading(false);
 		}
-	}
+	};
 
 	return (
 		<div className="auth-container">
@@ -53,14 +53,21 @@ export default function Login() {
 							required
 						/>
 					</div>
-					<button type="submit" className="btn btn-primary auth-submit" disabled={loading}>
-						{loading ? 'Loading...' : 'Login'}
+					<button
+						type="submit"
+						className="btn btn-primary auth-submit"
+						disabled={loading}
+					>
+						{loading ? "Loading..." : "Login"}
 					</button>
 				</form>
 				<p className="auth-footer">
-					Don't have an account? <Link to="/register" className="auth-link">Register</Link>
+					Don't have an account?{" "}
+					<Link to="/register" className="auth-link">
+						Register
+					</Link>
 				</p>
 			</div>
 		</div>
-	)
+	);
 }
