@@ -1,26 +1,26 @@
-import ky from 'ky'
+import ky from "ky";
 
 const api = ky.create({
-	prefixUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api',
+	prefixUrl: import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api",
 	hooks: {
 		beforeRequest: [
-			request => {
-				const token = localStorage.getItem('token')
+			(state) => {
+				const token = localStorage.getItem("token");
 				if (token) {
-					request.headers.set('Authorization', `Bearer ${token}`)
+					state.request.headers.set("Authorization", `Bearer ${token}`);
 				}
-			}
+			},
 		],
 		afterResponse: [
-			async (_request, _options, response) => {
-				if (response.status === 401) {
-					localStorage.removeItem('token')
-					window.location.href = '/login'
+			async (state) => {
+				if (state.response.status === 401) {
+					localStorage.removeItem("token");
+					window.location.href = "/login";
 				}
-				return response
-			}
-		]
-	}
-})
+				return state.response;
+			},
+		],
+	},
+});
 
-export default api
+export default api;
