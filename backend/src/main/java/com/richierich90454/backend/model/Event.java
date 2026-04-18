@@ -1,13 +1,6 @@
 package com.richierich90454.backend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="events")
@@ -22,7 +15,7 @@ public class Event implements Comparable<Event>{
 
     private Integer year;
 
-    @Column(length=200000)
+    @Column(length=2000)
     private String description;
 
     private String significance;
@@ -35,8 +28,10 @@ public class Event implements Comparable<Event>{
     @JoinColumn(name="civilization_id")
     private Civilization civilization;
 
+    @Column(nullable=false)
+    private String status="PENDING";
+
     public Event(){
-        
     }
 
     public Event(String name, Integer year, String description, String significance){
@@ -100,6 +95,14 @@ public class Event implements Comparable<Event>{
 
     public void setCivilization(Civilization civilization){
         this.civilization=civilization;
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status=status;
     }
 
     @Override
