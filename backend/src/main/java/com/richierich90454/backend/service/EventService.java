@@ -15,7 +15,8 @@ public class EventService{
 	private final PeriodService periodService;
 	private final CivilizationService civilizationService;
 
-	public EventService(EventRepository eventRepository, PeriodService periodService, CivilizationService civilizationService){
+	public EventService(EventRepository eventRepository, PeriodService periodService,
+			CivilizationService civilizationService){
 		this.eventRepository=eventRepository;
 		this.periodService=periodService;
 		this.civilizationService=civilizationService;
@@ -34,7 +35,7 @@ public class EventService{
 	}
 
 	public List<Event> getEventsByPeriodId(Long periodId){
-		return eventRepository.findByPeriodIdOrderByYearAsc(periodId).stream()
+		return eventRepository.findByPeriodIdWithDetails(periodId).stream()
 				.filter(e -> "APPROVED".equals(e.getStatus()))
 				.collect(Collectors.toList());
 	}

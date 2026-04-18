@@ -1,6 +1,9 @@
 package com.richierich90454.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="events")
@@ -27,6 +30,10 @@ public class Event implements Comparable<Event>{
     @ManyToOne
     @JoinColumn(name="civilization_id")
     private Civilization civilization;
+
+    @OneToMany(mappedBy="event", cascade=CascadeType.ALL, orphanRemoval=true)
+    @JsonIgnore
+    private List<Evidence> evidence=new ArrayList<>();
 
     @Column(nullable=false)
     private String status="PENDING";
@@ -95,6 +102,14 @@ public class Event implements Comparable<Event>{
 
     public void setCivilization(Civilization civilization){
         this.civilization=civilization;
+    }
+
+    public List<Evidence> getEvidence(){
+        return evidence;
+    }
+
+    public void setEvidence(List<Evidence> evidence){
+        this.evidence=evidence;
     }
 
     public String getStatus(){
