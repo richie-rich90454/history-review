@@ -70,6 +70,7 @@ public class SecurityConfig{
                 .requestMatchers("/api/public/**").permitAll()
                 .requestMatchers("/api/evidence/public/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/error").permitAll()
                 .requestMatchers("/api/evidence/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )

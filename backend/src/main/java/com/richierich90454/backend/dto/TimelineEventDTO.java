@@ -13,6 +13,7 @@ public class TimelineEventDTO{
     private CivilizationDTO civilization;
     private List<PersonDTO> people;
     private List<EvidenceDTO> evidence;
+    private Long courseId;
 
     public TimelineEventDTO(Event event){
         this.id=event.getId();
@@ -31,8 +32,13 @@ public class TimelineEventDTO{
                 .filter(e -> "APPROVED".equals(e.getStatus()))
                 .map(EvidenceDTO::new)
                 .collect(Collectors.toList());
+        if (event.getPeriod()!=null&&event.getPeriod().getCourse()!=null){
+            this.courseId=event.getPeriod().getCourse().getId();
+        }
     }
-
+    public Long getCourseId(){
+        return courseId;
+    }
     public Long getId(){
         return id;
     }

@@ -8,7 +8,6 @@
 	color: #524765;
 	font-weight: 500;
 	text-decoration: none;
-	transition: color 0.2s;
 }
 
 .back-link:hover {
@@ -33,33 +32,6 @@
 	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.timeline-wrapper .card-content-wrapper {
-	transition: all 0.3s ease;
-}
-
-.timeline-wrapper .timeline-controls {
-	margin-bottom: 1.5rem;
-}
-
-.timeline-wrapper .timeline-main-wrapper {
-	max-width: 1400px;
-	margin: 0 auto;
-}
-
-.card-description ul {
-	padding-left: 1.2rem;
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
-}
-
-.card-description li {
-	margin-bottom: 0.3rem;
-}
-
-.card-description strong {
-	color: #524765;
-}
-
 .error-alert {
 	background-color: #fef2f2;
 	color: #5e1414;
@@ -77,41 +49,145 @@
 	padding: 1rem;
 }
 
-.person-item,
-.evidence-item {
-	position: relative;
+.timeline-card-content {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.card-description,
+.card-significance {
+	margin: 0;
+	line-height: 1.5;
+}
+
+.card-civilization {
+	background: #f5f3f7;
+	padding: 10px;
+	border-radius: 6px;
+	margin-top: 5px;
+}
+
+.card-civilization p {
+	margin: 5px 0 0 0;
+}
+
+.card-people ul {
+	margin: 5px 0 0 20px;
+	padding: 0;
+}
+
+.card-people li {
+	margin-bottom: 5px;
+}
+
+.person-trigger {
+	color: #524765;
+	font-weight: 500;
 	cursor: help;
 	border-bottom: 1px dashed #524765;
 }
 
-.person-item:hover::after,
-.evidence-item:hover::after {
-	content: attr(data-tooltip);
-	position: absolute;
-	bottom: 100%;
-	left: 0;
-	background: #0f1115;
-	color: #ffffff;
-	padding: 8px 12px;
-	border-radius: 6px;
-	font-size: 0.85rem;
-	white-space: normal;
-	max-width: 300px;
-	width: max-content;
-	z-index: 1000;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	pointer-events: none;
-	margin-bottom: 8px;
+.person-trigger:hover {
+	color: #3f3550;
 }
 
-.person-item:hover::before,
-.evidence-item:hover::before {
-	content: "";
-	position: absolute;
-	bottom: 100%;
-	left: 16px;
-	border: 6px solid transparent;
-	border-top-color: #0f1115;
-	margin-bottom: -4px;
-	z-index: 1000;
+.hover-card-content {
+	background: #ffffff;
+	border-radius: 8px;
+	padding: 16px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+	border: 1px solid #e0dce8;
+	max-width: 320px;
+	z-index: 10000;
+}
+
+.person-popup h4 {
+	margin: 0 0 4px 0;
+	color: #0f1115;
+	font-size: 1.1rem;
+}
+
+.person-popup .person-years {
+	margin: 0 0 8px 0;
+	color: #524765;
+	font-size: 0.85rem;
+}
+
+.person-popup .person-bio {
+	margin: 0;
+	font-size: 0.9rem;
+	line-height: 1.5;
+	color: #4b5563;
+}
+
+.evidence-btn {
+	background: #524765;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	padding: 8px 14px;
+	font-size: 0.85rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background 0.2s;
+	margin-top: 8px;
+}
+
+.evidence-btn:hover {
+	background: #3f3550;
+}
+
+.evidence-modal {
+	background: white;
+	padding: 24px;
+	border-radius: 12px;
+	max-width: 800px;
+	max-height: 70vh;
+	overflow-y: auto;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.evidence-modal h3 {
+	margin-top: 0;
+	margin-bottom: 16px;
+	color: #0f1115;
+}
+
+.evidence-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9rem;
+}
+
+.evidence-table th {
+	background: #f5f3f7;
+	padding: 10px;
+	text-align: left;
+	font-weight: 600;
+	color: #0f1115;
+}
+
+.evidence-table td {
+	padding: 10px;
+	border-bottom: 1px solid #e5e7eb;
+	vertical-align: top;
+}
+
+.evidence-table tr:last-child td {
+	border-bottom: none;
+}
+
+.close-modal-btn {
+	margin-top: 20px;
+	padding: 8px 20px;
+	background: #e5e7eb;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: 500;
+}
+
+.close-modal-btn:hover {
+	background: #d1d5db;
 }

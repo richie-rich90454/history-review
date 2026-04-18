@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Chrono } from "react-chrono";
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@radix-ui/react-hover-card";
+import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
+import Popup from "reactjs-popup";
+import { useMediaQuery } from "react-responsive";
 import "react-chrono/dist/style.css";
+import "reactjs-popup/dist/index.css";
 import api from "../services/api";
 import "./EventsTimeline.css";
 
@@ -44,6 +49,7 @@ interface TimelineEvent {
 	civilization?: Civilization;
 	people?: Person[];
 	evidence?: Evidence[];
+	courseId?: number;
 }
 
 const EventsTimeline = () => {
@@ -51,6 +57,7 @@ const EventsTimeline = () => {
 	const [events, setEvents] = useState<TimelineEvent[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
+	const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
 	useEffect(() => {
 		api.get(`public/periods/${periodId}/timeline`)
@@ -59,6 +66,8 @@ const EventsTimeline = () => {
 			.catch(() => setError("Failed to load timeline events"))
 			.finally(() => setLoading(false));
 	}, [periodId]);
+
+	const courseId = events.length > 0 ? events[0].courseId : null;
 
 	const items = events.map((event) => {
 		const civName = event.civilization?.name || "Unknown";
@@ -69,36 +78,136 @@ const EventsTimeline = () => {
 			subtitle += ` | People: ${peopleList.map((p) => p.name).join(", ")}`;
 		}
 
-		// Build the detailed HTML with hover tooltips
-		let detailsHtml = `<div style="margin-bottom:8px;"><strong>Description:</strong> ${event.description}</div>`;
-		if (event.significance) {
-			detailsHtml += `<div style="margin-bottom:8px;"><strong>Significance:</strong> ${event.significance}</div>`;
-		}
-		if (event.civilization) {
-			detailsHtml += `<div style="margin-bottom:8px;"><strong>Civilization: ${event.civilization.name} (${event.civilization.startYear}-${event.civilization.endYear})</strong><br>${event.civilization.overview}</div>`;
-		}
-		if (peopleList.length > 0) {
-			detailsHtml += `<div style="margin-bottom:8px;"><strong>People:</strong><ul style="margin:4px 0 0 16px;">`;
-			peopleList.forEach((p) => {
-				const tooltipText = `${p.name} (${p.birthYear || "?"}-${p.deathYear || "?"}): ${p.biography || "No biography available"}`;
-				detailsHtml += `<li class="person-item" data-tooltip="${tooltipText.replace(/"/g, "&quot;")}"><strong>${p.name}</strong> (${p.birthYear || "?"}-${p.deathYear || "?"})</li>`;
-			});
-			detailsHtml += `</ul></div>`;
-		}
-		if (event.evidence && event.evidence.length > 0) {
-			detailsHtml += `<div style="margin-bottom:8px;"><strong>Evidence:</strong><ul style="margin:4px 0 0 16px;">`;
-			event.evidence.forEach((e) => {
-				const evidenceTooltip = `${e.title} [${e.type || "N/A"}] | Theme: ${e.theme?.name || "Unknown"} | Source: ${e.source || "N/A"}`;
-				detailsHtml += `<li class="evidence-item" data-tooltip="${evidenceTooltip.replace(/"/g, "&quot;")}"><strong>${e.title}</strong> [${e.type || "N/A"}] (Theme: ${e.theme?.name || "Unknown"})</li>`;
-			});
-			detailsHtml += `</ul></div>`;
-		}
-
 		return {
 			title: event.year.toString(),
 			cardTitle: event.name,
 			cardSubtitle: subtitle,
-			cardDetailedText: detailsHtml,
+			timelineContent: (
+				<div className="timeline-card-content">
+					<p className="card-description">
+						<strong>Description:</strong> {event.description}
+					</p>
+					{event.significance && (
+						<p className="card-significance">
+							<strong>Significance:</strong> {event.significance}
+						</p>
+					)}
+					{event.civilization && (
+						<div className="card-civilization">
+							<strong>
+								{event.civilization.name} ({event.civilization.startYear}–
+								{event.civilization.endYear})
+							</strong>
+							<p>{event.civilization.overview}</p>
+						</div>
+					)}
+					{peopleList.length > 0 && (
+						<div className="card-people">
+							<strong>People:</strong>
+							<ul>
+								{peopleList.map((p) => {
+									const triggerContent = (
+										<span className="person-trigger">
+											{p.name} ({p.birthYear || "?"}–{p.deathYear || "?"})
+										</span>
+									);
+									const popoverContent = (
+										<div className="person-popup">
+											<h4>{p.name}</h4>
+											<p className="person-years">
+												{p.birthYear || "?"} – {p.deathYear || "?"}
+											</p>
+											<p className="person-bio">
+												{p.biography || "No biography available."}
+											</p>
+										</div>
+									);
+									return (
+										<li key={p.id}>
+											{isMobile ? (
+												<Popover>
+													<PopoverTrigger asChild>
+														{triggerContent}
+													</PopoverTrigger>
+													<PopoverContent
+														className="popover-content"
+														sideOffset={5}
+													>
+														{popoverContent}
+													</PopoverContent>
+												</Popover>
+											) : (
+												<HoverCard openDelay={200} closeDelay={100}>
+													<HoverCardTrigger asChild>
+														{triggerContent}
+													</HoverCardTrigger>
+													<HoverCardContent
+														className="hover-card-content"
+														sideOffset={5}
+													>
+														{popoverContent}
+													</HoverCardContent>
+												</HoverCard>
+											)}
+										</li>
+									);
+								})}
+							</ul>
+						</div>
+					)}
+					{event.evidence && event.evidence.length > 0 && (
+						<div className="card-evidence">
+							<Popup
+								trigger={
+									<button className="evidence-btn">
+										View Evidence ({event.evidence.length})
+									</button>
+								}
+								modal
+								nested
+								closeOnDocumentClick
+							>
+								{
+									((close: () => void) => (
+										<Fragment>
+											<div className="evidence-modal">
+												<h3>Related Evidence</h3>
+												<table className="evidence-table">
+													<thead>
+														<tr>
+															<th>Title</th>
+															<th>Type</th>
+															<th>Theme</th>
+															<th>Description</th>
+															<th>Source</th>
+														</tr>
+													</thead>
+													<tbody>
+														{event.evidence!.map((e) => (
+															<tr key={e.id}>
+																<td>
+																	<strong>{e.title}</strong>
+																</td>
+																<td>{e.type || "—"}</td>
+																<td>{e.theme?.name || "—"}</td>
+																<td>{e.description}</td>
+																<td>{e.source || "—"}</td>
+															</tr>
+														))}
+													</tbody>
+												</table>
+												<button className="close-modal-btn" onClick={close}>
+													Close
+												</button>
+											</div>
+										</Fragment>
+									)) as any
+								}
+							</Popup>
+						</div>
+					)}
+				</div>
+			),
 		};
 	});
 
@@ -107,15 +216,14 @@ const EventsTimeline = () => {
 
 	return (
 		<div className="events-page container">
-			<Link to={`/courses/${periodId}`} className="back-link">
-				← Back to Periods
+			<Link to={courseId ? `/courses/${courseId}` : "/"} className="back-link">
+				← Back to Course
 			</Link>
 			<h2 className="events-title">Historical Timeline</h2>
 			<div className="timeline-wrapper">
 				<Chrono
 					items={items}
-					mode="VERTICAL_ALTERNATING"
-					parseDetailsAsHTML={true}
+					mode={isMobile ? "VERTICAL" : "VERTICAL_ALTERNATING"}
 					theme={{
 						primary: "#524765",
 						secondary: "#f5f3f7",
@@ -123,7 +231,7 @@ const EventsTimeline = () => {
 						titleColor: "#0f1115",
 						titleColorActive: "#524765",
 					}}
-					cardWidth={550}
+					cardWidth={isMobile ? window.innerWidth - 40 : 550}
 					cardHeight="auto"
 					fontSizes={{
 						cardTitle: "1.25rem",
