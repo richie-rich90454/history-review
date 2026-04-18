@@ -30,20 +30,22 @@ public class DataInitializer implements CommandLineRunner{
      */
     @Override
     public void run(String... args){
-        if (!userRepository.existsByEmail("admin@aphistory.com")){
-            User admin=new User();
-            admin.setEmail("admin@aphistory.com");
-            admin.setPasswordHash(passwordEncoder.encode("admin123"));
+        String adminEmail="richie-rich90454@aphistory.com";
+        User admin=userRepository.findByEmail(adminEmail).orElse(null);
+        if (admin == null){
+            admin=new User();
+            admin.setEmail(adminEmail);
             admin.setRole("admin");
             admin.setCreatedAt(LocalDateTime.now());
-            userRepository.save(admin);
-            System.out.println("Default admin created: admin@aphistory.com / admin123");
         }
+        admin.setPasswordHash(passwordEncoder.encode("password"));
+        userRepository.save(admin);
+        System.out.println("Admin user ensured: "+adminEmail+" with password 'password'");
 
         List<String> themeNames=Arrays.asList("Social", "Political", "Interactions", "Cultural", "Economic", "Technology");
         for (String name : themeNames){
             if (themeRepository.findByName(name).isEmpty()){
-                Theme theme=new Theme(name, "SPICE-T theme: " + name);
+                Theme theme=new Theme(name, "SPICE-T theme: "+name);
                 themeRepository.save(theme);
             }
         }
