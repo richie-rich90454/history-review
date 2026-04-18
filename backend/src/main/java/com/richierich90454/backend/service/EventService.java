@@ -2,6 +2,7 @@ package com.richierich90454.backend.service;
 
 import com.richierich90454.backend.model.Event;
 import com.richierich90454.backend.model.Period;
+import com.richierich90454.backend.dto.TimelineEventDTO;
 import com.richierich90454.backend.model.Civilization;
 import com.richierich90454.backend.repository.EventRepository;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,13 @@ public class EventService{
 		return eventRepository.findByPeriodIdWithDetails(periodId).stream()
 				.filter(e -> "APPROVED".equals(e.getStatus()))
 				.collect(Collectors.toList());
+	}
+
+	public List<TimelineEventDTO> getTimelineEventsByPeriodId(Long periodId){
+		return eventRepository.findByPeriodIdOrderByYearAsc(periodId).stream()
+			.filter(e -> "APPROVED".equals(e.getStatus()))
+			.map(TimelineEventDTO::new)
+			.collect(Collectors.toList());
 	}
 
 	public List<Event> getEventsByCivilizationId(Long civilizationId){

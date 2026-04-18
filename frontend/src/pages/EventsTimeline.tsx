@@ -9,7 +9,8 @@ interface Civilization {
 	id: number;
 	name: string;
 	overview: string;
-	people?: Person[];
+	startYear: number;
+	endYear: number;
 }
 
 interface Person {
@@ -20,76 +21,89 @@ interface Person {
 	biography?: string;
 }
 
+interface Theme {
+	id: number;
+	name: string;
+}
+
 interface Evidence {
 	id: number;
 	title: string;
 	description: string;
 	type?: string;
 	source?: string;
+	theme?: Theme;
 }
 
-interface Event {
+interface TimelineEvent {
 	id: number;
 	name: string;
 	year: number;
 	description: string;
 	significance?: string;
 	civilization?: Civilization;
+	people?: Person[];
 	evidence?: Evidence[];
 }
 
 const EventsTimeline = () => {
 	const { periodId } = useParams<{ periodId: string }>();
-	const [events, setEvents] = useState<Event[]>([]);
+	const [events, setEvents] = useState<TimelineEvent[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
 
 	useEffect(() => {
-		api.get(`public/periods/${periodId}/events`)
-			.json<Event[]>()
+		api.get(`public/periods/${periodId}/timeline`)
+			.json<TimelineEvent[]>()
 			.then(setEvents)
 			.catch(() => setError("Failed to load timeline events"))
 			.finally(() => setLoading(false));
 	}, [periodId]);
 
-	const timelineItems = events.map((event) => {
-		const peopleList = event.civilization?.people || [];
-		let cardSubtitle = `Civilization: ${event.civilization?.name || "Unknown"}`;
+	const items = events.map((event) => {
+		const civName = event.civilization?.name || "Unknown";
+		const peopleList = event.people || [];
+
+		let subtitle = `Civilization: ${civName}`;
 		if (peopleList.length > 0) {
-			cardSubtitle += ` | Figures: ${peopleList.map((p) => p.name).join(", ")}`;
+			subtitle += ` | People: ${peopleList.map((p) => p.name).join(", ")}`;
 		}
 
-		let detailedText = `<p><strong>Description:</strong> ${event.description}</p>`;
+		// Build the detailed HTML with hover tooltips
+		let detailsHtml = `<div style="margin-bottom:8px;"><strong>Description:</strong> ${event.description}</div>`;
 		if (event.significance) {
-			detailedText += `<p><strong>Significance:</strong> ${event.significance}</p>`;
+			detailsHtml += `<div style="margin-bottom:8px;"><strong>Significance:</strong> ${event.significance}</div>`;
 		}
-		if (event.civilization?.overview) {
-			detailedText += `<p><strong>About ${event.civilization.name}:</strong> ${event.civilization.overview}</p>`;
+		if (event.civilization) {
+			detailsHtml += `<div style="margin-bottom:8px;"><strong>Civilization: ${event.civilization.name} (${event.civilization.startYear}-${event.civilization.endYear})</strong><br>${event.civilization.overview}</div>`;
+		}
+		if (peopleList.length > 0) {
+			detailsHtml += `<div style="margin-bottom:8px;"><strong>People:</strong><ul style="margin:4px 0 0 16px;">`;
+			peopleList.forEach((p) => {
+				const tooltipText = `${p.name} (${p.birthYear || "?"}-${p.deathYear || "?"}): ${p.biography || "No biography available"}`;
+				detailsHtml += `<li class="person-item" data-tooltip="${tooltipText.replace(/"/g, "&quot;")}"><strong>${p.name}</strong> (${p.birthYear || "?"}-${p.deathYear || "?"})</li>`;
+			});
+			detailsHtml += `</ul></div>`;
 		}
 		if (event.evidence && event.evidence.length > 0) {
-			let evidenceHtml = "<p><strong>Related Evidence:</strong><ul>";
+			detailsHtml += `<div style="margin-bottom:8px;"><strong>Evidence:</strong><ul style="margin:4px 0 0 16px;">`;
 			event.evidence.forEach((e) => {
-				evidenceHtml += `<li><strong>${e.title}</strong> (${e.type || "N/A"}): ${e.description}</li>`;
+				const evidenceTooltip = `${e.title} [${e.type || "N/A"}] | Theme: ${e.theme?.name || "Unknown"} | Source: ${e.source || "N/A"}`;
+				detailsHtml += `<li class="evidence-item" data-tooltip="${evidenceTooltip.replace(/"/g, "&quot;")}"><strong>${e.title}</strong> [${e.type || "N/A"}] (Theme: ${e.theme?.name || "Unknown"})</li>`;
 			});
-			evidenceHtml += "</ul></p>";
-			detailedText += evidenceHtml;
+			detailsHtml += `</ul></div>`;
 		}
 
 		return {
 			title: event.year.toString(),
 			cardTitle: event.name,
-			cardSubtitle: cardSubtitle,
-			cardText: detailedText,
+			cardSubtitle: subtitle,
+			cardDetailedText: detailsHtml,
 		};
 	});
 
-	if (loading) {
-		return <div className="container">Loading interactive timeline...</div>;
-	}
-
-	if (error) {
-		return <div className="container error-alert">{error}</div>;
-	}
+	if (loading) return <div className="container">Loading timeline...</div>;
+	if (error) return <div className="container error-alert">{error}</div>;
 
 	return (
 		<div className="events-page container">
@@ -99,8 +113,9 @@ const EventsTimeline = () => {
 			<h2 className="events-title">Historical Timeline</h2>
 			<div className="timeline-wrapper">
 				<Chrono
-					items={timelineItems}
+					items={items}
 					mode="VERTICAL_ALTERNATING"
+					parseDetailsAsHTML={true}
 					theme={{
 						primary: "#524765",
 						secondary: "#f5f3f7",
@@ -108,7 +123,7 @@ const EventsTimeline = () => {
 						titleColor: "#0f1115",
 						titleColorActive: "#524765",
 					}}
-					cardWidth={500}
+					cardWidth={550}
 					cardHeight="auto"
 					fontSizes={{
 						cardTitle: "1.25rem",

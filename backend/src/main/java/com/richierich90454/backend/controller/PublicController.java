@@ -1,5 +1,6 @@
 package com.richierich90454.backend.controller;
 
+import com.richierich90454.backend.dto.TimelineEventDTO;
 import com.richierich90454.backend.model.*;
 import com.richierich90454.backend.service.*;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,10 @@ public class PublicController{
 		this.personService=personService;
 		this.evidenceService=evidenceService;
 	}
-
+	@GetMapping("/periods/{periodId}/timeline")
+	public List<TimelineEventDTO> getTimelineEvents(@PathVariable Long periodId){
+		return eventService.getTimelineEventsByPeriodId(periodId);
+	}
 	@GetMapping("/courses")
 	public List<Course> getAllCourses(){
 		return courseService.getAllCourses();

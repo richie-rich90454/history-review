@@ -76,3 +76,42 @@
 	margin: 0 auto;
 	padding: 1rem;
 }
+
+.person-item,
+.evidence-item {
+	position: relative;
+	cursor: help;
+	border-bottom: 1px dashed #524765;
+}
+
+.person-item:hover::after,
+.evidence-item:hover::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	bottom: 100%;
+	left: 0;
+	background: #0f1115;
+	color: #ffffff;
+	padding: 8px 12px;
+	border-radius: 6px;
+	font-size: 0.85rem;
+	white-space: normal;
+	max-width: 300px;
+	width: max-content;
+	z-index: 1000;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	pointer-events: none;
+	margin-bottom: 8px;
+}
+
+.person-item:hover::before,
+.evidence-item:hover::before {
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: 16px;
+	border: 6px solid transparent;
+	border-top-color: #0f1115;
+	margin-bottom: -4px;
+	z-index: 1000;
+}
