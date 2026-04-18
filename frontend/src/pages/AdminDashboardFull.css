@@ -1,0 +1,76 @@
+.admin-dashboard-full {
+	max-width: 1200px;
+	margin: 2rem auto;
+}
+
+.admin-title {
+	font-size: 2rem;
+	font-weight: bold;
+	margin-bottom: 1.5rem;
+	color: var(--c7);
+}
+
+.admin-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+	border-bottom: 2px solid var(--c9);
+	padding-bottom: 1rem;
+}
+
+.admin-tab {
+	padding: 0.5rem 1.25rem;
+	border: none;
+	background: transparent;
+	font-size: 1rem;
+	font-weight: 500;
+	color: var(--c10);
+	cursor: pointer;
+	transition: all 0.2s;
+	border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.admin-tab:hover {
+	background: var(--c5);
+	color: var(--c7);
+}
+
+.admin-tab.active {
+	background: var(--c1);
+	color: var(--c4);
+}
+
+.admin-tab-content {
+	background: var(--c4);
+	border-radius: 0.5rem;
+	padding: 1.5rem;
+	box-shadow: var(--bw1);
+}
+
+.admin-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+	padding: 0.75rem 1rem;
+	text-align: left;
+	border-bottom: 1px solid var(--c9);
+}
+
+.admin-table th {
+	background: var(--c5);
+	font-weight: 600;
+	color: var(--c7);
+}
+
+.admin-table tr:hover {
+	background: var(--c13);
+}
+
+.admin-table .btn-danger {
+	padding: 0.25rem 0.75rem;
+	font-size: 0.875rem;
+}
