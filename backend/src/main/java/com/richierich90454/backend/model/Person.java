@@ -16,7 +16,7 @@ public class Person{
     private Integer birthYear;
     private Integer deathYear;
 
-    @Column(length=1000)
+    @Column(length=100000)
     private String biography;
 
     @ManyToOne
