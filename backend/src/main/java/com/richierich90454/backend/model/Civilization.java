@@ -1,19 +1,8 @@
 package com.richierich90454.backend.model;
 
-
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name="civilizations")
@@ -44,6 +33,9 @@ public class Civilization{
 
     @OneToMany(mappedBy="civilization", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Person> people=new ArrayList<>();
+
+    @Column(nullable=false)
+    private String status="PENDING";
 
     public Civilization(){
     }
@@ -125,5 +117,13 @@ public class Civilization{
 
     public void setPeople(List<Person> people){
         this.people=people;
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status=status;
     }
 }
