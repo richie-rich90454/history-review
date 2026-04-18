@@ -1,7 +1,7 @@
 import ky from "ky";
 
 const api = ky.create({
-	prefix: import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api",
+	prefix: import.meta.env.VITE_API_BASE_URL || "",
 	hooks: {
 		beforeRequest: [
 			(state) => {
