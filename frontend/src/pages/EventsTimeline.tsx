@@ -9,6 +9,7 @@ interface Civilization {
 	id: number;
 	name: string;
 	overview: string;
+	people?: Person[];
 }
 
 interface Person {
@@ -34,7 +35,6 @@ interface Event {
 	description: string;
 	significance?: string;
 	civilization?: Civilization;
-	people?: Person[];
 	evidence?: Evidence[];
 }
 
@@ -53,36 +53,33 @@ const EventsTimeline = () => {
 	}, [periodId]);
 
 	const timelineItems = events.map((event) => {
-		let cardSubtitle = `🏛️ Civilization: ${event.civilization?.name || "Unknown"}`;
-
-		if (event.people && event.people.length > 0) {
-			cardSubtitle += ` | 👤 Figures: ${event.people.map((p) => p.name).join(", ")}`;
+		const peopleList = event.civilization?.people || [];
+		let cardSubtitle = `Civilization: ${event.civilization?.name || "Unknown"}`;
+		if (peopleList.length > 0) {
+			cardSubtitle += ` | Figures: ${peopleList.map((p) => p.name).join(", ")}`;
 		}
 
-		let detailedHtml = `<p><strong>📜 Description:</strong> ${event.description}</p>`;
-
+		let detailedText = `<p><strong>Description:</strong> ${event.description}</p>`;
 		if (event.significance) {
-			detailedHtml += `<p><strong>⚖️ Significance:</strong> ${event.significance}</p>`;
+			detailedText += `<p><strong>Significance:</strong> ${event.significance}</p>`;
 		}
-
 		if (event.civilization?.overview) {
-			detailedHtml += `<p><strong>🏛️ About ${event.civilization.name}:</strong> ${event.civilization.overview}</p>`;
+			detailedText += `<p><strong>About ${event.civilization.name}:</strong> ${event.civilization.overview}</p>`;
 		}
-
 		if (event.evidence && event.evidence.length > 0) {
-			let evidenceHtml = "<p><strong>📁 Related Evidence:</strong><ul>";
+			let evidenceHtml = "<p><strong>Related Evidence:</strong><ul>";
 			event.evidence.forEach((e) => {
 				evidenceHtml += `<li><strong>${e.title}</strong> (${e.type || "N/A"}): ${e.description}</li>`;
 			});
 			evidenceHtml += "</ul></p>";
-			detailedHtml += evidenceHtml;
+			detailedText += evidenceHtml;
 		}
 
 		return {
 			title: event.year.toString(),
 			cardTitle: event.name,
 			cardSubtitle: cardSubtitle,
-			cardDetailedText: detailedHtml,
+			cardText: detailedText,
 		};
 	});
 
@@ -108,19 +105,15 @@ const EventsTimeline = () => {
 						primary: "#524765",
 						secondary: "#f5f3f7",
 						cardBgColor: "#ffffff",
-						cardForeColor: "#0f1115",
 						titleColor: "#0f1115",
 						titleColorActive: "#524765",
 					}}
 					cardWidth={500}
 					cardHeight="auto"
-					enableDarkMode={false}
-					hideControls={false}
-					disableToolbar={false}
 					fontSizes={{
 						cardTitle: "1.25rem",
 						cardSubtitle: "0.9rem",
-						cardDetailedText: "0.95rem",
+						cardText: "0.95rem",
 						title: "1rem",
 					}}
 				/>
