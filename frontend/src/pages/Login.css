@@ -1,55 +1,55 @@
 .auth-container {
-    min-height: calc(100vh - 64px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	min-height: calc(100vh - 64px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .auth-card {
-    background: var(--c4);
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: var(--bw3);
-    width: 100%;
-    max-width: 400px;
+	background: var(--c4);
+	padding: 2rem;
+	border-radius: 0.5rem;
+	box-shadow: var(--bw3);
+	width: 100%;
+	max-width: 400px;
 }
 
 .auth-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--c7);
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 1.5rem;
+	color: var(--c7);
 }
 
 .error-alert {
-    background-color: var(--c8);
-    color: var(--c2);
-    padding: 0.75rem;
-    border-radius: 0.375rem;
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
+	background-color: var(--c8);
+	color: var(--c2);
+	padding: 0.75rem;
+	border-radius: 0.375rem;
+	margin-bottom: 1rem;
+	font-size: 0.875rem;
 }
 
 .auth-submit {
-    width: 100%;
-    margin-top: 1rem;
-    padding: 0.75rem;
-    font-size: 1rem;
+	width: 100%;
+	margin-top: 1rem;
+	padding: 0.75rem;
+	font-size: 1rem;
 }
 
 .auth-footer {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: var(--c10);
-    font-size: 0.875rem;
+	text-align: center;
+	margin-top: 1.5rem;
+	color: var(--c10);
+	font-size: 0.875rem;
 }
 
 .auth-link {
-    color: var(--c1);
-    font-weight: 500;
+	color: var(--c1);
+	font-weight: 500;
 }
 
 .auth-link:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }

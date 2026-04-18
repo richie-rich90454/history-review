@@ -29,7 +29,9 @@
 	border-radius: 0.5rem;
 	padding: 1.5rem;
 	box-shadow: var(--bw1);
-	transition: box-shadow 0.2s, transform 0.2s;
+	transition:
+		box-shadow 0.2s,
+		transform 0.2s;
 	border: 1px solid var(--c9);
 }
 
