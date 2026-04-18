@@ -13,7 +13,7 @@ public class Evidence{
     @Column(nullable=false)
     private String title;
 
-    @Column(length=2000)
+    @Column(length=20000)
     private String description;
 
     @ManyToOne
@@ -34,6 +34,9 @@ public class Evidence{
 
     @Column(length=500)
     private String significance;
+
+    @Column(nullable=false)
+    private String status="PENDING";
 
     public Evidence(){
     }
@@ -116,5 +119,13 @@ public class Evidence{
 
     public void setSignificance(String significance){
         this.significance=significance;
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status=status;
     }
 }

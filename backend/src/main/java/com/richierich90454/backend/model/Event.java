@@ -15,7 +15,7 @@ public class Event implements Comparable<Event>{
 
     private Integer year;
 
-    @Column(length=2000)
+    @Column(length=200000)
     private String description;
 
     private String significance;
