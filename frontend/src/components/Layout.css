@@ -1,0 +1,38 @@
+.navbar {
+	background-color: var(--c1);
+	color: var(--c4);
+	padding: 1rem 0;
+	box-shadow: var(--bw2);
+}
+
+.navbar-content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.navbar-brand {
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: var(--c4);
+}
+
+.navbar-links {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+}
+
+.navbar-link {
+	color: var(--c4);
+	font-weight: 500;
+	transition: text-decoration 0.2s;
+}
+
+.navbar-link:hover {
+	text-decoration: underline;
+}
+
+.navbar-user {
+	opacity: 0.9;
+}
