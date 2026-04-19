@@ -15,6 +15,7 @@
 		"format:json": "prettier --write \"**/*.json\""
 	},
 	"dependencies": {
+		"@radix-ui/react-dialog": "^1.1.15",
 		"@radix-ui/react-hover-card": "^1.1.15",
 		"@radix-ui/react-popover": "^1.1.15",
 		"@xyflow/react": "^12.10.2",
