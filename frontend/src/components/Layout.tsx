@@ -10,7 +10,7 @@ export default function Layout() {
             <nav className="navbar">
                 <div className="container navbar-content">
                     <Link to="/" className="navbar-brand">
-                        AP History Review
+                        History Review
                     </Link>
                     <div className="navbar-links">
                         {user ? (
