@@ -1,0 +1,61 @@
+/* Ported from frontend/src/pages/Login.css.
+   React tokens -> SolidJS semantic tokens (see styles/tokens.module.css):
+     --c1 -> --color-primary, --c2 -> --color-accent, --c4 -> --color-white,
+     --c7 -> --color-text, --c8 -> --color-accent-bg, --c10 -> --color-text-secondary,
+     --bw3 -> --shadow-lg */
+
+.authContainer {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.authCard {
+    background: var(--color-white);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 400px;
+}
+
+.authTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--color-text);
+}
+
+.errorAlert {
+    background-color: var(--color-accent-bg);
+    color: var(--color-accent);
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+
+.authSubmit {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+.authFooter {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+}
+
+.authLink {
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.authLink:hover {
+    text-decoration: underline;
+}
