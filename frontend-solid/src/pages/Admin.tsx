@@ -46,7 +46,7 @@ export default function Admin(): JSX.Element {
                     <PeriodsTab />
                 </Show>
                 <Show when={activeTab() === "events"}>
-                    <div>Tab content coming</div>
+                    <EventsTab />
                 </Show>
                 <Show when={activeTab() === "persons"}>
                     <div>Tab content coming</div>
