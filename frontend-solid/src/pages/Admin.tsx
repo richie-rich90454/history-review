@@ -1,4 +1,5 @@
 import { createSignal, For, Show, type JSX } from "solid-js";
+import CivilizationsTab from "../components/admin/CivilizationsTab";
 import styles from "./Admin.module.css";
 
 type TabType =
@@ -38,7 +39,7 @@ export default function Admin(): JSX.Element {
             </div>
             <div class={styles.adminTabContent}>
                 <Show when={activeTab() === "civilizations"}>
-                    <div>Tab content coming</div>
+                    <CivilizationsTab />
                 </Show>
                 <Show when={activeTab() === "periods"}>
                     <div>Tab content coming</div>
