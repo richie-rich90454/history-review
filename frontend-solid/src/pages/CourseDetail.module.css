@@ -1,0 +1,65 @@
+/* Ported from frontend/src/pages/CourseDetail.css.
+   React tokens -> SolidJS semantic tokens (see styles/tokens.module.css):
+     --c1 -> --color-primary, --c4 -> --color-white, --c9 -> --color-border,
+     --c10 -> --color-text-secondary, --c11 -> --color-text-strong,
+     --bw1 -> --shadow-sm, --c8 -> --color-accent-bg, --c2 -> --color-accent */
+
+.backLink {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+
+.periodsTitle {
+    font-size: 1.875rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.periodsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.periodCard {
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.periodTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.periodYears {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
+.periodOverview {
+    color: var(--color-text-strong);
+    margin-bottom: 1rem;
+}
+
+.periodLink {
+    font-size: 0.875rem;
+}
+
+.errorAlert {
+    background-color: var(--color-accent-bg);
+    color: var(--color-accent);
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
