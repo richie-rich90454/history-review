@@ -1,5 +1,5 @@
 import { createResource, For, Show, type JSX } from "solid-js";
-import { useApi } from "../contexts/ServicesContext";
+import { useApi, useAnimation } from "../contexts/ServicesContext";
 import styles from "./Approvals.module.css";
 
 interface PendingItem {
@@ -12,6 +12,7 @@ interface PendingItem {
 export default function Approvals(): JSX.Element {
     const api = useApi();
     const ky = api.getKy();
+    const animation = useAnimation();
 
     const [items, { refetch }] = createResource(
         async (): Promise<PendingItem[]> =>
@@ -38,7 +39,15 @@ export default function Approvals(): JSX.Element {
                 <div class={styles.approvalsList}>
                     <For each={items()}>
                         {(item) => (
-                            <div class={styles.approvalCard}>
+                            <div
+                                class={styles.approvalCard}
+                                onMouseEnter={(e) =>
+                                    animation.cardHoverIn(e.currentTarget)
+                                }
+                                onMouseLeave={(e) =>
+                                    animation.cardHoverOut(e.currentTarget)
+                                }
+                            >
                                 <div class={styles.approvalHeader}>
                                     <span class={styles.approvalType}>
                                         {item.type}
