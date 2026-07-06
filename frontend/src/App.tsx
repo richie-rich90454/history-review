@@ -12,45 +12,45 @@ import AdminApprovals from "./pages/AdminApprovals";
 import EventsTimeline from "./pages/EventsTimeline";
 
 function App() {
-	return (
-		<AuthProvider>
-			<BrowserRouter>
-				<Routes>
-					<Route path="/" element={<Layout />}>
-						<Route index element={<Home />} />
-						<Route path="login" element={<Login />} />
-						<Route path="register" element={<Register />} />
-						<Route path="courses/:courseId" element={<CourseDetail />} />
-						<Route path="periods/:periodId/events" element={<EventsTimeline />} />
-						<Route
-							path="submit"
-							element={
-								<ProtectedRoute>
-									<SubmitContent />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="admin"
-							element={
-								<ProtectedRoute adminOnly>
-									<AdminDashboardFull />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="admin/approvals"
-							element={
-								<ProtectedRoute adminOnly>
-									<AdminApprovals />
-								</ProtectedRoute>
-							}
-						/>
-					</Route>
-				</Routes>
-			</BrowserRouter>
-		</AuthProvider>
-	);
+    return (
+        <AuthProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                        <Route index element={<Home />} />
+                        <Route path="login" element={<Login />} />
+                        <Route path="register" element={<Register />} />
+                        <Route path="courses/:courseId" element={<CourseDetail />} />
+                        <Route path="periods/:periodId/events" element={<EventsTimeline />} />
+                        <Route
+                            path="submit"
+                            element={
+                                <ProtectedRoute>
+                                    <SubmitContent />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="admin"
+                            element={
+                                <ProtectedRoute adminOnly>
+                                    <AdminDashboardFull />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="admin/approvals"
+                            element={
+                                <ProtectedRoute adminOnly>
+                                    <AdminApprovals />
+                                </ProtectedRoute>
+                            }
+                        />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </AuthProvider>
+    );
 }
 
 export default App;
