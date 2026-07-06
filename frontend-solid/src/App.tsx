@@ -1,106 +1,60 @@
-import { createSignal } from 'solid-js'
-import solidLogo from './assets/solid.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { Route, Router } from "@solidjs/router";
+import type { JSX } from "solid-js";
+import { ServicesProvider } from "./contexts/ServicesContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import Layout from "./components/Layout";
+import { RouteGuard } from "./components/RouteGuard";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import CourseDetail from "./pages/CourseDetail";
+import EventsTimeline from "./pages/EventsTimeline";
+import Submit from "./pages/Submit";
+import Admin from "./pages/Admin";
+import Approvals from "./pages/Approvals";
 
-function App() {
-  const [count, setCount] = createSignal(0)
-
-  return (
-    <>
-      <section id="center">
-        <div class="hero">
-          <img src={heroImg} class="base" width="170" height="179" alt="" />
-          <img src={solidLogo} class="framework" alt="Solid logo" />
-          <img src={viteLogo} class="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          class="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count()}
-        </button>
-      </section>
-
-      <div class="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg class="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img class="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://solidjs.com/" target="_blank">
-                <img class="button-icon" src={solidLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg class="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg class="button-icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg class="button-icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg class="button-icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg class="button-icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div class="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function App(): JSX.Element {
+    return (
+        <ServicesProvider>
+            <AuthProvider>
+                <Router>
+                    <Route path="/" component={Layout}>
+                        <Route path="/" component={Home} />
+                        <Route path="login" component={Login} />
+                        <Route path="register" component={Register} />
+                        <Route
+                            path="courses/:courseId"
+                            component={CourseDetail}
+                        />
+                        <Route
+                            path="periods/:periodId/events"
+                            component={EventsTimeline}
+                        />
+                        <Route
+                            path="submit"
+                            component={() =>
+                                RouteGuard.Protected({ children: <Submit /> })
+                            }
+                        />
+                        <Route
+                            path="admin"
+                            component={() =>
+                                RouteGuard.AdminOnly({ children: <Admin /> })
+                            }
+                        />
+                        <Route
+                            path="admin/approvals"
+                            component={() =>
+                                RouteGuard.AdminOnly({
+                                    children: <Approvals />,
+                                })
+                            }
+                        />
+                    </Route>
+                </Router>
+            </AuthProvider>
+        </ServicesProvider>
+    );
 }
 
-export default App
+export default App;
