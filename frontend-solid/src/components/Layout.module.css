@@ -1,0 +1,44 @@
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 1rem 0;
+    box-shadow: var(--shadow-md);
+}
+
+.navbarContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbarBrand {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--color-white);
+}
+
+.navbarLinks {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navbarLink {
+    color: var(--color-white);
+    font-weight: 500;
+    transition: text-decoration 0.2s;
+}
+
+.navbarLink:hover {
+    text-decoration: underline;
+}
+
+.navbarUser {
+    opacity: 0.9;
+}
