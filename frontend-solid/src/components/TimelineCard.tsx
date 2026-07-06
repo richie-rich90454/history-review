@@ -56,8 +56,14 @@ export interface TimelineEvent {
 
 interface TimelineCardProps {
     event: TimelineEvent;
+    /** Position in the timeline list; used to stagger the entrance animation. */
+    index: number;
     onEvidenceClick: (evidence: Evidence[]) => void;
     renderPerson?: (person: Person) => JSX.Element;
+}
+
+function prefersReducedMotion(): boolean {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
 function defaultRenderPerson(person: Person): JSX.Element {
@@ -69,9 +75,37 @@ function defaultRenderPerson(person: Person): JSX.Element {
 }
 
 export default function TimelineCard(props: TimelineCardProps): JSX.Element {
+    const animation = useAnimation();
     const renderPerson = () => props.renderPerson ?? defaultRenderPerson;
     const people = () => props.event.people ?? [];
     const evidence = () => props.event.evidence ?? [];
+    let cardRef: HTMLElement | undefined;
+
+    // Stagger entrance: each card slides up + fades in with a delay based on
+    // its position in the list. Only transforms (y) and opacity are animated,
+    // and the animation is skipped entirely under prefers-reduced-motion.
+    onMount(() => {
+        if (!cardRef || prefersReducedMotion()) return;
+        gsap.fromTo(
+            cardRef,
+            { opacity: 0, y: 24 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                delay: props.index * 0.08,
+                ease: "power2.out",
+            },
+        );
+    });
+
+    const handleHoverIn = (): void => {
+        if (cardRef) animation.cardHoverIn(cardRef);
+    };
+    const handleHoverOut = (): void => {
+        if (cardRef) animation.cardHoverOut(cardRef);
+    };
+
     const subtitle = () => {
         const civName = props.event.civilization?.name || "Unknown";
         let text = `Civilization: ${civName}`;
@@ -82,7 +116,12 @@ export default function TimelineCard(props: TimelineCardProps): JSX.Element {
     };
 
     return (
-        <article class={styles.card}>
+        <article
+            ref={cardRef}
+            class={styles.card}
+            onMouseEnter={handleHoverIn}
+            onMouseLeave={handleHoverOut}
+        >
             <div class={styles.cardHeader}>
                 <span class={styles.cardYear}>{props.event.year}</span>
                 <h3 class={styles.cardTitle}>{props.event.name}</h3>
