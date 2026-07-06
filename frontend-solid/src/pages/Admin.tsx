@@ -4,6 +4,7 @@ import PeriodsTab from "../components/admin/PeriodsTab";
 import EventsTab from "../components/admin/EventsTab";
 import PersonsTab from "../components/admin/PersonsTab";
 import EvidenceTab from "../components/admin/EvidenceTab";
+import ThemesTab from "../components/admin/ThemesTab";
 import styles from "./Admin.module.css";
 
 type TabType =
