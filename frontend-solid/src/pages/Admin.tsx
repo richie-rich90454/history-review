@@ -4,7 +4,6 @@ import PeriodsTab from "../components/admin/PeriodsTab";
 import EventsTab from "../components/admin/EventsTab";
 import PersonsTab from "../components/admin/PersonsTab";
 import EvidenceTab from "../components/admin/EvidenceTab";
-import ThemesTab from "../components/admin/ThemesTab";
 import styles from "./Admin.module.css";
 
 type TabType =
@@ -56,7 +55,7 @@ export default function Admin(): JSX.Element {
                     <PersonsTab />
                 </Show>
                 <Show when={activeTab() === "evidence"}>
-                    <div>Tab content coming</div>
+                    <EvidenceTab />
                 </Show>
                 <Show when={activeTab() === "themes"}>
                     <div>Tab content coming</div>
