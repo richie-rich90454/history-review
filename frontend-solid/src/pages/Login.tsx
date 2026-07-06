@@ -29,7 +29,7 @@ export default function Login(): JSX.Element {
     return (
         <div class={styles.authContainer}>
             <div class={styles.authCard}>
-                <h2 class={styles.authTitle}>Login to AP History</h2>
+                <h2 class={styles.authTitle}>Login to History Review</h2>
                 <Show when={error()}>
                     <div class={styles.errorAlert}>{error()}</div>
                 </Show>

@@ -102,8 +102,10 @@ export default function Submit(): JSX.Element {
             </Show>
             <form onSubmit={handleSubmit} class={styles.submitForm}>
                 <div class="form-group">
-                    <label>Course</label>
+                    <label for="submit-course">Course</label>
                     <select
+                        id="submit-course"
+                        aria-label="Select a course"
                         value={String(selectedCourse())}
                         onChange={(e) =>
                             setSelectedCourse(
@@ -119,8 +121,10 @@ export default function Submit(): JSX.Element {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Period</label>
+                    <label for="submit-period">Period</label>
                     <select
+                        id="submit-period"
+                        aria-label="Select a period"
                         value={String(selectedPeriod())}
                         onChange={(e) =>
                             setSelectedPeriod(
@@ -136,8 +140,10 @@ export default function Submit(): JSX.Element {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Content Type</label>
+                    <label for="submit-content-type">Content Type</label>
                     <select
+                        id="submit-content-type"
+                        aria-label="Select a content type"
                         value={contentType()}
                         onChange={(e) =>
                             setContentType(
@@ -245,6 +251,7 @@ export default function Submit(): JSX.Element {
                         }
                     />
                     <select
+                        aria-label="Select a theme"
                         onChange={(e) =>
                             updateField("themeId", e.currentTarget.value)
                         }

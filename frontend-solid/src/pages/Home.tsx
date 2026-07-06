@@ -30,7 +30,7 @@ export default function Home(): JSX.Element {
                     </Show>
                 }
             >
-                <h1 class={styles.homeTitle}>AP History Courses</h1>
+                <h1 class={styles.homeTitle}>History Courses</h1>
                 <div class={styles.courseGrid}>
                     <For each={courses()}>
                         {(course) => (

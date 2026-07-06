@@ -19,7 +19,7 @@ export default function Layout(props: RouteSectionProps): JSX.Element {
 
     return (
         <div class={styles.app}>
-            <nav class={styles.navbar}>
+            <nav class={styles.navbar} aria-label="Main navigation">
                 <div class={`container ${styles.navbarContent}`}>
                     <A href="/" class={styles.navbarBrand} end>
                         History Review
@@ -67,6 +67,7 @@ export default function Layout(props: RouteSectionProps): JSX.Element {
                             <button
                                 onClick={logout}
                                 class={styles.navbarLink}
+                                aria-label="Log out of your account"
                             >
                                 Logout
                             </button>
