@@ -52,7 +52,7 @@ export default function Approvals(): JSX.Element {
                                 </pre>
                                 <div class={styles.approvalActions}>
                                     <button
-                                        class={`btn btn-success ${styles.btnSuccess}`}
+                                        class={styles.btnSuccess}
                                         onClick={() =>
                                             handleApprove(item.type, item.id)
                                         }

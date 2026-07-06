@@ -17,10 +17,7 @@
 }
 
 .approvalCard {
-    background: var(--color-white);
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
+    composes: cardBase from "../styles/shared.module.css";
 }
 
 .approvalHeader {
@@ -62,6 +59,7 @@
 }
 
 .btnSuccess {
+    composes: btnBase from "../styles/shared.module.css";
     background: #10b981;
     color: white;
 }

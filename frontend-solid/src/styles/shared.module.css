@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Shared composable classes
+   --------------------------------------------------------------------------
+   Base button and card primitives that component CSS Modules compose from via
+   `composes:`. Keeping these in one place avoids duplicating the same
+   padding/radius/shadow rules across every module.
+   ========================================================================== */
+
+.btnBase {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+    transition:
+        background-color var(--transition-fast),
+        opacity var(--transition-fast);
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+}
+
+.cardBase {
+    background-color: var(--color-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-6);
+}
