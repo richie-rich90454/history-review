@@ -1,6 +1,6 @@
 import { A, useParams } from "@solidjs/router";
-import { createResource, createSignal, For, onMount, Show, type JSX } from "solid-js";
-import { useApi, useAnimation } from "../contexts/ServicesContext";
+import { createResource, createSignal, For, Show, type JSX } from "solid-js";
+import { useApi } from "../contexts/ServicesContext";
 import TimelineCard, {
     type Evidence,
     type Person,
@@ -22,7 +22,6 @@ import styles from "./EventsTimeline.module.css";
 export default function EventsTimeline(): JSX.Element {
     const params = useParams();
     const api = useApi();
-    const animation = useAnimation();
 
     const [events] = createResource(
         () => params.periodId,
@@ -39,11 +38,6 @@ export default function EventsTimeline(): JSX.Element {
     );
 
     const [selectedEvidence, setSelectedEvidence] = createSignal<Evidence[]>([]);
-    let pageRef: HTMLDivElement | undefined;
-
-    onMount(() => {
-        if (pageRef) animation.pageTransition(pageRef);
-    });
 
     const courseId = () => events()?.[0]?.courseId ?? null;
     const backHref = () => (courseId() ? `/courses/${courseId()}` : "/");
@@ -57,7 +51,7 @@ export default function EventsTimeline(): JSX.Element {
     );
 
     return (
-        <div class={`container ${styles.eventsPage}`} ref={pageRef}>
+        <div class={`container ${styles.eventsPage}`}>
             <A href={backHref()} class={styles.backLink}>
                 ← Back to Course
             </A>

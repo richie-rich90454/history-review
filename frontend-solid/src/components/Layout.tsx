@@ -1,12 +1,21 @@
-import { A } from "@solidjs/router";
+import { A, useLocation } from "@solidjs/router";
 import type { RouteSectionProps } from "@solidjs/router";
-import { Show } from "solid-js";
-import type { JSX } from "solid-js";
+import { createEffect, Show, type JSX } from "solid-js";
 import { useAuthContext } from "../contexts/AuthContext";
+import { useAnimation } from "../contexts/ServicesContext";
 import styles from "./Layout.module.css";
 
 export default function Layout(props: RouteSectionProps): JSX.Element {
     const { user, logout } = useAuthContext();
+    const animation = useAnimation();
+    const location = useLocation();
+    let mainRef: HTMLElement | undefined;
+
+    // Replay the page-enter animation whenever the route changes.
+    createEffect(() => {
+        location.pathname;
+        if (mainRef) animation.pageTransition(mainRef);
+    });
 
     return (
         <div class={styles.app}>
@@ -65,7 +74,9 @@ export default function Layout(props: RouteSectionProps): JSX.Element {
                     </div>
                 </div>
             </nav>
-            <main class="container">{props.children}</main>
+            <main class="container" ref={mainRef}>
+                {props.children}
+            </main>
         </div>
     );
 }
