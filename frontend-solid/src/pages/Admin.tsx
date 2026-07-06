@@ -58,7 +58,7 @@ export default function Admin(): JSX.Element {
                     <EvidenceTab />
                 </Show>
                 <Show when={activeTab() === "themes"}>
-                    <div>Tab content coming</div>
+                    <ThemesTab />
                 </Show>
             </div>
         </div>
