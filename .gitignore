@@ -220,3 +220,6 @@ dist-ssr
 *.sln
 *.sw?
 *.exe
+.trae
+AGENTS.md
+.opencode
