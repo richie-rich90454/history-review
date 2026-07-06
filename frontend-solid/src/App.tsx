@@ -1,17 +1,19 @@
 import { Route, Router } from "@solidjs/router";
-import type { JSX } from "solid-js";
+import { lazy, type JSX } from "solid-js";
 import { ServicesProvider } from "./contexts/ServicesContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import Layout from "./components/Layout";
 import { RouteGuard } from "./components/RouteGuard";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import CourseDetail from "./pages/CourseDetail";
-import EventsTimeline from "./pages/EventsTimeline";
-import Submit from "./pages/Submit";
-import Admin from "./pages/Admin";
-import Approvals from "./pages/Approvals";
+
+// Lazy-load every page so each route ships in its own chunk.
+const Home = lazy(() => import("./pages/Home"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const CourseDetail = lazy(() => import("./pages/CourseDetail"));
+const EventsTimeline = lazy(() => import("./pages/EventsTimeline"));
+const Submit = lazy(() => import("./pages/Submit"));
+const Admin = lazy(() => import("./pages/Admin"));
+const Approvals = lazy(() => import("./pages/Approvals"));
 
 function App(): JSX.Element {
     return (
