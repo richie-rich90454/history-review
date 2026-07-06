@@ -1,4 +1,6 @@
-import { For, Show, type JSX } from "solid-js";
+import { For, Show, onMount, type JSX } from "solid-js";
+import gsap from "gsap";
+import { useAnimation } from "../contexts/ServicesContext";
 import styles from "./TimelineCard.module.css";
 
 /* ---------------------------------------------------------------------------

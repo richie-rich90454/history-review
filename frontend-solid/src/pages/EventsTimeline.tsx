@@ -39,7 +39,7 @@ export default function EventsTimeline(): JSX.Element {
     );
 
     const [selectedEvidence, setSelectedEvidence] = createSignal<Evidence[]>([]);
-    let pageRef: HTMLElement | undefined;
+    let pageRef: HTMLDivElement | undefined;
 
     onMount(() => {
         if (pageRef) animation.pageTransition(pageRef);
